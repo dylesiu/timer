@@ -1,0 +1,27 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            json_login:
+                check_path: /login
+            logout:
+                path:   app_logout
+
+    access_control:
+        - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
